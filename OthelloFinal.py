@@ -262,13 +262,12 @@ class Bot:
     # BOT FUNCTIONS
 
     def check_valid_moves(self, board_go, game_go):
-        valid_moves = []
+        possible_moves = []
         for tile in board_go.board:
             legal_move = board_go.is_legal_move(tile.x_pos, tile.y_pos, game_go.active_player)
-            if legal_move: 
-                valid_moves.append([tile.x_pos, tile.y_pos])
-        return valid_moves
-
+            if not legal_move == False: 
+                possible_moves.append([tile.x_pos, tile.y_pos])
+        return random.choice(possible_moves) if possible_moves else None
 
 # Create a new board & a new game instances
 board_go = Board(8)
@@ -294,8 +293,6 @@ while not game_go.is_game_over:
 
     # Second player / bot logic goes here
     else:
-        move_coordinates = [0, 0]
-        move_coordinates[0] = int(input("Coordonnées en X: "))
-        move_coordinates[1] = int(input("Coordonnées en Y: "))
+        move_coordinates = myBot.check_valid_moves(board_go, game_go)
         game_go.place_pawn(
             move_coordinates[0], move_coordinates[1], board_go, game_go.active_player)
